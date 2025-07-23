@@ -106,7 +106,7 @@ public class SettingServlet extends HttpServlet {
 		user.setDescription(request.getParameter("description"));
 		return user;
 	}
-
+	//更新のエラー用
 	private boolean isValid(User user, List<String> errorMessages) {
 
 		log.info(new Object() {
@@ -127,9 +127,7 @@ public class SettingServlet extends HttpServlet {
 		} else if (20 < account.length()) {
 			errorMessages.add("アカウント名は20文字以下で入力してください");
 		}
-		if (StringUtils.isEmpty(password)) {
-			errorMessages.add("パスワードを入力してください");
-		}
+
 		if (!StringUtils.isEmpty(email) && (50 < email.length())) {
 			errorMessages.add("メールアドレスは50文字以下で入力してください");
 		}

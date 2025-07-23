@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang.StringUtils;
+
 import chapter6.beans.User;
 import chapter6.exception.NoRowsUpdatedRuntimeException;
 import chapter6.exception.SQLRuntimeException;
@@ -34,6 +36,7 @@ public class UserDao {
 
 	}
 
+	//最低限のinsertの機能 p22
 	public void insert(Connection connection, User user) {
 
 		log.info(new Object() {
@@ -80,6 +83,7 @@ public class UserDao {
 		}
 	}
 
+	// ログイン機能を実装35
 	public User select(Connection connection, String accountOrEmail, String password) {
 
 		log.info(new Object() {
@@ -146,6 +150,7 @@ public class UserDao {
 		}
 	}
 
+	//編集対象のユーザ情報を取得するためのメソッド
 	public User select(Connection connection, int id) {
 
 		log.info(new Object() {
@@ -162,8 +167,11 @@ public class UserDao {
 			ps.setInt(1, id);
 
 			ResultSet rs = ps.executeQuery();
+			//引数で指定されたSQLをデータベースで実行する
 
 			List<User> users = toUsers(rs);
+			//取った情報
+
 			if (users.isEmpty()) {
 				return null;
 			} else if (2 <= users.size()) {
@@ -181,6 +189,7 @@ public class UserDao {
 		}
 	}
 
+	//更新用のメソッド「パスワードがあるうえでのupdate」
 	public void update(Connection connection, User user) {
 
 		log.info(new Object() {
@@ -189,25 +198,44 @@ public class UserDao {
 				}.getClass().getEnclosingMethod().getName());
 
 		PreparedStatement ps = null;
+		//SQL文をデータベースに送るための準備
 		try {
 			StringBuilder sql = new StringBuilder();
+			//StringBuilderのようにメソッドをつなげてSQLを作る
 			sql.append("UPDATE users SET ");
+			//SQLを実行す文章を組み立てる
 			sql.append("    account = ?, ");
 			sql.append("    name = ?, ");
 			sql.append("    email = ?, ");
-			sql.append("    password = ?, ");
-			sql.append("    description = ?, ");
-			sql.append("    updated_date = CURRENT_TIMESTAMP ");
-			sql.append("WHERE id = ?");
-
-			ps = connection.prepareStatement(sql.toString());
-
-			ps.setString(1, user.getAccount());
-			ps.setString(2, user.getName());
-			ps.setString(3, user.getEmail());
-			ps.setString(4, user.getPassword());
-			ps.setString(5, user.getDescription());
-			ps.setInt(6, user.getId());
+			if (!StringUtils.isEmpty(user.getPassword())) {
+				//パスワードがある時は
+				sql.append("    password = ?, ");
+				//検索したい枠組みを作る
+				sql.append("    description = ?, ");
+				sql.append("    updated_date = CURRENT_TIMESTAMP ");
+				sql.append("WHERE id = ?");
+				//挿入
+				ps = connection.prepareStatement(sql.toString());
+				//セットする
+				//if文で分岐
+				ps.setString(1, user.getAccount());
+				//１つ目の？にセット
+				ps.setString(2, user.getName());
+				ps.setString(3, user.getEmail());
+				ps.setString(4, user.getPassword());
+				ps.setString(5, user.getDescription());
+				ps.setInt(6, user.getId());
+			} else {
+				sql.append("    description = ?, ");
+				sql.append("    updated_date = CURRENT_TIMESTAMP ");
+				sql.append("WHERE id = ?");
+				ps = connection.prepareStatement(sql.toString());
+				ps.setString(1, user.getAccount());
+				ps.setString(2, user.getName());
+				ps.setString(3, user.getEmail());
+				ps.setString(4, user.getDescription());
+				ps.setInt(5, user.getId());
+			}
 
 			int count = ps.executeUpdate();
 			if (count == 0) {
