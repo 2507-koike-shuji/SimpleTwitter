@@ -200,39 +200,30 @@ public class UserDao {
 		PreparedStatement ps = null;
 		//SQL文をデータベースに送るための準備
 		try {
-			StringBuilder sql = new StringBuilder();
-			//StringBuilderのようにメソッドをつなげてSQLを作る
-			sql.append("UPDATE users SET ");
-			//SQLを実行す文章を組み立てる
+			StringBuilder sql = new StringBuilder(); //StringBuilderのようにメソッドをつなげてSQLを作る
+			sql.append("UPDATE users SET "); //SQLを実行す文章を組み立てる
 			sql.append("    account = ?, ");
 			sql.append("    name = ?, ");
 			sql.append("    email = ?, ");
-			if (!StringUtils.isEmpty(user.getPassword())) {
-				//パスワードがある時は
+
+			if (!StringUtils.isBlank(user.getPassword())) { //パスワードがある時は
 				sql.append("    password = ?, ");
-				//検索したい枠組みを作る
-				sql.append("    description = ?, ");
-				sql.append("    updated_date = CURRENT_TIMESTAMP ");
-				sql.append("WHERE id = ?");
-				//挿入
-				ps = connection.prepareStatement(sql.toString());
-				//セットする
-				//if文で分岐
-				ps.setString(1, user.getAccount());
-				//１つ目の？にセット
-				ps.setString(2, user.getName());
-				ps.setString(3, user.getEmail());
+			} //検索したい枠組みを作る
+			sql.append("    description = ?, ");
+			sql.append("    updated_date = CURRENT_TIMESTAMP ");
+			sql.append("WHERE id = ?");
+
+			ps = connection.prepareStatement(sql.toString()); //セットする
+
+			ps.setString(1, user.getAccount());//１つ目の？にセット
+			ps.setString(2, user.getName());
+			ps.setString(3, user.getEmail());
+			if (!StringUtils.isBlank(user.getPassword())) {
+
 				ps.setString(4, user.getPassword());
 				ps.setString(5, user.getDescription());
 				ps.setInt(6, user.getId());
 			} else {
-				sql.append("    description = ?, ");
-				sql.append("    updated_date = CURRENT_TIMESTAMP ");
-				sql.append("WHERE id = ?");
-				ps = connection.prepareStatement(sql.toString());
-				ps.setString(1, user.getAccount());
-				ps.setString(2, user.getName());
-				ps.setString(3, user.getEmail());
 				ps.setString(4, user.getDescription());
 				ps.setInt(5, user.getId());
 			}

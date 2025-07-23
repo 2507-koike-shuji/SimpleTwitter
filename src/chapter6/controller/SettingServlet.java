@@ -106,6 +106,7 @@ public class SettingServlet extends HttpServlet {
 		user.setDescription(request.getParameter("description"));
 		return user;
 	}
+
 	//更新のエラー用
 	private boolean isValid(User user, List<String> errorMessages) {
 
