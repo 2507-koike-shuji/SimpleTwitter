@@ -32,6 +32,29 @@ public class UserService {
 
 	}
 
+	//ユーザーが重複しています
+	public User select(String account) {
+
+		Connection connection = null;
+		//※DBに接続するために必要・下準備
+		try {
+			connection = getConnection();
+			//つながる
+			User user = new UserDao().select(connection, account);
+			commit(connection);
+
+			return user;
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
 	public void insert(User user) {
 
 		log.info(new Object() {

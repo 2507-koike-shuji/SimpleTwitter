@@ -36,6 +36,38 @@ public class UserDao {
 
 	}
 
+	//ユーザーが重複しています
+	public User select(Connection connection, String account) {
+
+		PreparedStatement ps = null;
+		try {
+			String sql = "SELECT * FROM users WHERE account = ?";
+
+			//SQLに変換
+			ps = connection.prepareStatement(sql);
+
+			ps.setString(1, account);
+			//SQｌを実行、結果はrsに入る　account 数字
+			ResultSet rs = ps.executeQuery();
+			//結果を詰め替える
+			List<User> users = toUsers(rs);
+			//users = SELECT * FROM users WHERE account = ?
+			if (users.isEmpty()) {
+				return null;
+			} else if (2 <= users.size()) {
+				//該当するユーザーの数が２以上
+				throw new IllegalStateException("ユーザーが重複しています");
+			} else {
+				return users.get(0); ///アカウントで限定したユーザー(本来なら一人しかいないはずゆえに0番目)の情報のが全て(名前～アカウント名)取得される
+			}
+
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
+
 	//最低限のinsertの機能 p22
 	public void insert(Connection connection, User user) {
 

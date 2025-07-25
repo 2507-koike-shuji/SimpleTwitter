@@ -49,8 +49,9 @@ public class SettingServlet extends HttpServlet {
 				}.getClass().getEnclosingMethod().getName());
 
 		HttpSession session = request.getSession();
+		//入力して、送信した瞬間にdoget  ※session用をすでにimportしているため　①セッションスタート
 		User loginUser = (User) session.getAttribute("loginUser");
-
+		//seetting.JSPの２５行目を表示させるために、sessionから取得した値をセットしている　form内のもの全て取得　②セッションの情報取得
 		User user = new UserService().select(loginUser.getId());
 
 		request.setAttribute("user", user);
@@ -67,6 +68,7 @@ public class SettingServlet extends HttpServlet {
 				}.getClass().getEnclosingMethod().getName());
 
 		HttpSession session = request.getSession();
+
 		List<String> errorMessages = new ArrayList<String>();
 
 		User user = getUser(request);
@@ -83,7 +85,7 @@ public class SettingServlet extends HttpServlet {
 			request.setAttribute("errorMessages", errorMessages);
 			request.setAttribute("user", user);
 			request.getRequestDispatcher("setting.jsp").forward(request, response);
-			return;
+			return; //voidに対するもの
 		}
 
 		session.setAttribute("loginUser", user);
@@ -109,7 +111,7 @@ public class SettingServlet extends HttpServlet {
 
 	//更新のエラー用
 	private boolean isValid(User user, List<String> errorMessages) {
-
+		//このUserはsseison由来のもの
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
 				" : " + new Object() {
@@ -117,8 +119,9 @@ public class SettingServlet extends HttpServlet {
 
 		String name = user.getName();
 		String account = user.getAccount();
-		String password = user.getPassword();
+		//String password = user.getPassword();
 		String email = user.getEmail();
+		User UserCheck = new UserService().select(account);
 
 		if (!StringUtils.isEmpty(name) && (20 < name.length())) {
 			errorMessages.add("名前は20文字以下で入力してください");
@@ -127,6 +130,16 @@ public class SettingServlet extends HttpServlet {
 			errorMessages.add("アカウント名を入力してください");
 		} else if (20 < account.length()) {
 			errorMessages.add("アカウント名は20文字以下で入力してください");
+		}
+		if (!StringUtils.isEmpty(email) && (50 < email.length())) {
+			errorMessages.add("メールアドレスは50文字以下で入力してください");
+		}
+		if (UserCheck != null && user.getId() != UserCheck.getId()) {
+			//nullならば重なりがない 問題ない nullでない　→　user.get(0)の時
+			//userという箱に入っているidを取得
+			//User.dao→UserService→SettingServletにきてる //user.get(0)もしくはnull
+			//UserCheckで取得した情報とsessionで取得したID((本人には変えられない))の突合→問題あった時にエラーがでる
+			errorMessages.add("このアカウント名はすでに使われております");
 		}
 
 		if (!StringUtils.isEmpty(email) && (50 < email.length())) {
