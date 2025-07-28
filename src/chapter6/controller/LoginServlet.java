@@ -70,7 +70,15 @@ public class LoginServlet extends HttpServlet {
 		}
 
 		HttpSession session = request.getSession();
+		// セッションを取得する
 		session.setAttribute("loginUser", user);
+		//logoinuserという名前でuser型のuserをセッションに入れた
+
+		//①セッションを取得「開始の準備」②入力されたものをloginuser（初出）でuserを入れる ③今後、loginuserを使えるようになる
+
+		//セッションの始まりはどこだ？ログインしたときだ　そこからログアウトするまで
+
+		//セッションの準備（①～③）をloginでして、必要な時に毎回セッションを取得してから、set getする必要がある「それが一つの文になることもある」
 		response.sendRedirect("./");
 	}
 }

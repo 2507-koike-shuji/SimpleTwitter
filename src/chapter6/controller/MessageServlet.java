@@ -46,13 +46,18 @@ public class MessageServlet extends HttpServlet {
 		}.getClass().getEnclosingClass().getName() +
 				" : " + new Object() {
 				}.getClass().getEnclosingMethod().getName());
-
+		//セッションを利用するには必要
 		HttpSession session = request.getSession();
+		//空の配列をつくる
 		List<String> errorMessages = new ArrayList<String>();
-
+		//リクエストから値を取り出す際の基本構文
 		String text = request.getParameter("text");
+		//呼び出している（）は呼び出し先に渡している
 		if (!isValid(text, errorMessages)) {
+			//問題あるならば、セッションに入れる
 			session.setAttribute("errorMessages", errorMessages);
+			//メイン画面に戻す(top.jspのエラーの記載のところに飛び)　この先には進まない
+			//セッションに入れないと、画面が飛んだ瞬間に無くなる
 			response.sendRedirect("./");
 			return;
 		}
@@ -67,6 +72,7 @@ public class MessageServlet extends HttpServlet {
 		response.sendRedirect("./");
 	}
 
+	//呼び出された（つぶやきで送られてきた内容の審査）
 	private boolean isValid(String text, List<String> errorMessages) {
 
 		log.info(new Object() {

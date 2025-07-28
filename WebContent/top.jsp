@@ -60,15 +60,14 @@
 	</div>
 	<div class="messages">
 		<c:forEach items="${messages}" var="message">
+			<!-- var 要素を格納する変数名 message1はTOPservletから削除-->
 			<div class="message">
 				<div class="account-name">
-					<span class="account">
-						<a href="./?user_id=<c:out value="${message.userId}"/> ">
-							<c:out value="${message.account}" />
-						</a>
-					</span>
-					<span class="name">
-						<c:out value="${message.name}" />
+					<span class="account"> <a
+						href="./?user_id=<c:out value="${message.userId}"/> "> <c:out
+								value="${message.account}" />
+					</a>
+					</span> <span class="name"> <c:out value="${message.name}" />
 					</span>
 				</div>
 				<div class="text">
@@ -78,6 +77,20 @@
 					<fmt:formatDate value="${message.createdDate}"
 						pattern="yyyy/MM/dd HH:mm:ss" />
 				</div>
+				<c:if test="${message.userId == loginUser.id}">
+					<form action="deletemessage" method="post">
+						<input type="submit" value="削除">
+						 <input name="id" value="${message.id}" id="id" type="hidden" />
+						<!-- input　いろいろな機能をすでに持つ　form内で同時に遅れる-->
+						<!-- vale 初期値　id HTML要素に一意な名前を付けるための属性 -->
+						<!-- nameサーバーに送ったデータを識別する際の識別子-->
+					</form>
+					<form action="edit" method="get">
+						<input type="submit" value="編集">
+						 <input name="id" value="${message.id}" id="id" type="hidden" />
+						  <input name="text" value="${message.text}" id="text" type="hidden" />
+					</form>
+				</c:if>
 			</div>
 		</c:forEach>
 	</div>

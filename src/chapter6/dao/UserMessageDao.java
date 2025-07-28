@@ -98,6 +98,7 @@ public class UserMessageDao {
 			while (rs.next()) {
 				//オブジェクトのデータがなくなるまで処理を繰り返すためのループ構文
 
+				//カラムごとに詰め替える
 				UserMessage message = new UserMessage();
 				message.setId(rs.getInt("id"));
 				message.setText(rs.getString("text"));

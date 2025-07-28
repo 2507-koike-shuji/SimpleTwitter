@@ -43,7 +43,8 @@ public class TopServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			//サーバーが受信したブラウザからのリクエストに対応するオブジェクトが 「HttpServletRequest」
-			//getブラウザはサーバーに対してページの取得を要求	post入力したデータをサーバーに転送する際に使用
+			//getブラウザはサーバーに対してページの取得を要求「画面表示」	post入力したデータをサーバーに転送する際に使用[更新] requstにユーザーが入力したものが入っている
+
 			throws IOException, ServletException {
 
 		log.info(new Object() {
