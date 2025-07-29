@@ -48,7 +48,7 @@
 		</div>
 		<c:remove var="errorMessages" scope="session" />
 	</c:if>
-
+	<!--つぶやき-->
 	<div class="form-area">
 		<c:if test="${ isShowMessageForm }">
 			<form action="message" method="post">
@@ -58,9 +58,11 @@
 			</form>
 		</c:if>
 	</div>
+	<!--今までのつぶやきの表示-->
 	<div class="messages">
 		<c:forEach items="${messages}" var="message">
-			<!-- var 要素を格納する変数名 message1はTOPservletから削除-->
+			<!-- var 要素を格納する変数名 messagesはTOPservletから-->
+			<!-- top.jsp → top.servlet   初期表示の時は、getでURLに行くと、WebServlet(urlPatterns = { "/index.jsp" })に紐づくものが動く　そういう設定 -->
 			<div class="message">
 				<div class="account-name">
 					<span class="account"> <a
@@ -77,6 +79,7 @@
 					<fmt:formatDate value="${message.createdDate}"
 						pattern="yyyy/MM/dd HH:mm:ss" />
 				</div>
+					<!--削除表示-->
 				<c:if test="${message.userId == loginUser.id}">
 					<form action="deletemessage" method="post">
 						<input type="submit" value="削除">
@@ -85,10 +88,10 @@
 						<!-- vale 初期値　id HTML要素に一意な名前を付けるための属性 -->
 						<!-- nameサーバーに送ったデータを識別する際の識別子-->
 					</form>
+					<!--更新表示-->
 					<form action="edit" method="get">
 						<input type="submit" value="編集">
 						 <input name="id" value="${message.id}" id="id" type="hidden" />
-						  <input name="text" value="${message.text}" id="text" type="hidden" />
 					</form>
 				</c:if>
 			</div>

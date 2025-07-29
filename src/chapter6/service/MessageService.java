@@ -63,6 +63,7 @@ public class MessageService {
 		}
 	}
 
+	//つぶやきの表示
 	public List<UserMessage> select(String userId) {
 
 		log.info(new Object() {
@@ -72,9 +73,9 @@ public class MessageService {
 
 		final int LIMIT_NUM = 1000;
 
-		Connection connection = null;
+		Connection connection = null; //Connection型オブジェクトを生成 ※DBに接続するために必要
 		try {
-			connection = getConnection();
+			connection = getConnection(); //Connectionを有効化
 			/*
 			* idをnullで初期化
 			* ServletからuserIdの値が渡ってきていたら
@@ -108,7 +109,8 @@ public class MessageService {
 			close(connection);
 		}
 	}
-	// メソッド名（引数）
+
+	// つぶやきの削除
 	public void delete(String id) {
 
 		log.info(new Object() {
@@ -119,7 +121,7 @@ public class MessageService {
 		Connection connection = null;
 		try {
 			connection = getConnection();
-			new MessageDao().delete(connection,id);
+			new MessageDao().delete(connection, id);
 			commit(connection);
 		} catch (RuntimeException e) {
 			rollback(connection);
@@ -135,18 +137,37 @@ public class MessageService {
 			close(connection);
 		}
 	}
-	public void update(String text, String id) {
+
+	//つぶやきの編集画面の表示
+	public List<UserMessage> selectEdit(String messageId) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
 				" : " + new Object() {
 				}.getClass().getEnclosingMethod().getName());
 
-		Connection connection = null;
+
+		Connection connection = null; //Connection型オブジェクトを生成 ※DBに接続するために必要
 		try {
-			connection = getConnection();
-			new MessageDao().update(connection,text,id);
+			connection = getConnection(); //Connectionを有効化
+			/*
+			* idをnullで初期化
+			* ServletからuserIdの値が渡ってきていたら
+			* 整数型に型変換し、idに代入
+			*/
+			Integer id = null;
+			if (!StringUtils.isEmpty(messageId)) {
+				id = Integer.parseInt(messageId);
+			}
+			/*
+			* messageDao.selectに引数としてInteger型のidを追加
+			* idがnullだったら全件取得する
+			* idがnull以外だったら、その値に対応するユーザーIDの投稿を取得する
+			*/
+			List<UserMessage> messageText = new MessageDao().selectEdit(connection, id);
 			commit(connection);
+
+			return messageText;
 		} catch (RuntimeException e) {
 			rollback(connection);
 			log.log(Level.SEVERE, new Object() {

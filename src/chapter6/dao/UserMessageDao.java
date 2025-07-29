@@ -32,6 +32,7 @@ public class UserMessageDao {
 
 	}
 
+	//DBからデータを引っ張ってくる
 	public List<UserMessage> select(Connection connection, Integer id, int num) {
 		//DBUtilsでconnectionsのメソッドを作っている
 
@@ -40,8 +41,10 @@ public class UserMessageDao {
 				" : " + new Object() {
 				}.getClass().getEnclosingMethod().getName());
 
+		//	1：SQLの下地を作る
 		PreparedStatement ps = null;
 
+		//2:SQL文の作成
 		try {
 			//もし、ユーザーIDが押下されたら、ユーザーのものだけを示す
 			//青文字をそのまま、MYSQLで使うと、検索結果が出る　今回はここを該当のユーザーだけをだした
@@ -62,19 +65,24 @@ public class UserMessageDao {
 			}
 			sql.append("ORDER BY created_date DESC limit " + num);
 
-			//SQLに変換
+			//3：SQLを実行できるようにする
 			ps = connection.prepareStatement(sql.toString());
 			if (id != null) {
+
+				//４:SQLの動的部分に値をセットする
 				ps.setInt(1, id);
 			}
 			//topから持ってきたリンクの人のidを?に入れる
 
-			//SQｌを実行、結果はrsに入る
+			//5:SQｌを実行、結果はrsに入る
 			ResultSet rs = ps.executeQuery();
 
 			//結果を詰め替える
 			List<UserMessage> messages = toUserMessages(rs);
+			//メソッドを呼び出している「private List<UserMessage> toUserMessages(ResultSet rs) throws SQLException」
+			//求めていたモノをすべて表示するため　lsit
 			return messages;
+			//rerturnで35行目の戻り値　	public List<UserMessage> select(Connection connection, Integer id, int num) {に渡す
 
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, new Object() {
@@ -85,8 +93,10 @@ public class UserMessageDao {
 		}
 	}
 
-	//resultset型からList<UserMessage>につめ変える
+	//resultset型[データを扱えない]からList<UserMessage>につめ変える
+
 	private List<UserMessage> toUserMessages(ResultSet rs) throws SQLException {
+		//     戻り値の型         メソッド名     引数
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -109,7 +119,7 @@ public class UserMessageDao {
 
 				messages.add(message);
 			}
-			return messages;
+			return messages;// List<UserMessage> の戻り値の型と一致 messagesは呼び出し元のist<UserMessage> messages = toUserMessages(rs);「」の「 toUserMessages(rs)」へ飛ぶ
 		} finally {
 			close(rs);
 		}

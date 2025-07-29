@@ -65,7 +65,7 @@ public class SignUpServlet extends HttpServlet {
 		User user = getUser(request);
 		//userリクエストできたもの　入力された情報「HttpServletRequest request」を引数にしている　getuserはメソッド
 		if (!isValid(user, errorMessages)) {
-			//isValidは呼び出し元 結果は(!isValid(user, errorMessages))にはいる 　今回ならばtrue or  false
+			//isValidは呼び出し元 結果は(isValid(user, errorMessages))にはいる 　今回ならばtrue or  false
 			//errorMessagesはまだ空白で宣言したばかり
 			//
 			request.setAttribute("errorMessages", errorMessages);

@@ -44,7 +44,7 @@ public class TopServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			//サーバーが受信したブラウザからのリクエストに対応するオブジェクトが 「HttpServletRequest」
 			//getブラウザはサーバーに対してページの取得を要求「画面表示」	post入力したデータをサーバーに転送する際に使用[更新] requstにユーザーが入力したものが入っている
-
+			//top.jsp → top.servlet  初期表示の時は、getでURLに行くと、WebServlet(urlPatterns = { "/index.jsp" })に紐づくものが動く設定
 			throws IOException, ServletException {
 
 		log.info(new Object() {
@@ -53,18 +53,24 @@ public class TopServlet extends HttpServlet {
 				}.getClass().getEnclosingMethod().getName());
 
 		boolean isShowMessageForm = false;
+		//セッションで得たloginUserの情報をuserに入れてる	getSessionメソッドを呼び出すことで、セッションが利用できるようになる　「呼び出す＋getを１文にする」
 		User user = (User) request.getSession().getAttribute("loginUser");
-		//セッションで得たloginUserの情報をuserに入れてる	getSessionメソッドを呼び出すことで、セッションが利用できるようになる
+
 		if (user != null) {
 			isShowMessageForm = true;
 		}
-		String userId = request.getParameter("user_id");
-		List<UserMessage> messages = new MessageService().select(userId);
-		//List<UserMessage>beansでひとまとまりにしている情報「ほかでも使うから」
 
+		String userId = request.getParameter("user_id");
+
+		//          下へf     				MessageServiceにuserIdを渡す　及びかえって来る
+		List<UserMessage> messages = new MessageService().select(userId);
+
+		//top.jspに渡す${messages} リクエストから値を取り出す際の基本構文  <%= request.getAttribute("messages") %>
 		request.setAttribute("messages", messages);
+
 		//第一引数に格納する名前(key)[テーブル]、第二引数に格納する値(value)「60行」を渡す
 		request.setAttribute("isShowMessageForm", isShowMessageForm);
+		//getRequestDispatcherメソッドの引数に呼び出したいJSP名指定してRequestDispatcherオブジェクトに渡すことで、画面の指定
 		request.getRequestDispatcher("/top.jsp").forward(request, response);
 		//getRequestDispatcherメソッドの引数に呼び出したいJSP名指定してRequestDispatcherオブジェクトに渡すことで、画面の指定
 	}
