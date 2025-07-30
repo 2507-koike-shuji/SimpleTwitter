@@ -173,7 +173,6 @@ public class UserDao {
 				user.setDescription(rs.getString("description"));
 				user.setCreatedDate(rs.getTimestamp("created_date"));
 				user.setUpdatedDate(rs.getTimestamp("updated_date"));
-
 				users.add(user);
 			}
 			return users;
