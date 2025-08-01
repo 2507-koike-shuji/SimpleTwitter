@@ -132,7 +132,14 @@ public class MessageDao {
 			List<Message> message = toUserMessages(rs);
 			//メソッドを呼び出している「private List<UserMessage> toUserMessages(ResultSet rs) throws SQLException」
 			//求めていたモノをすべて表示するため　lsit
-			return message.get(0);
+			if (message.isEmpty()) {
+				return null;
+			} else {
+				return message.get(0);
+			}
+
+			//ないのに０番目を返そうとしている
+			//→userdaoが参考になる
 			//rerturnで35行目の戻り値　	public List<UserMessage> select(Connection connection, Integer id, int num) {に渡す
 
 		} catch (SQLException e) {
@@ -145,8 +152,8 @@ public class MessageDao {
 	}
 
 	//resultset型[データを扱えない]からList<UserMessage>につめ変える
-			//型をbeansで設定していた
-	private List<Message>toUserMessages(ResultSet rs) throws SQLException {
+	//型をbeansで設定していた
+	private List<Message> toUserMessages(ResultSet rs) throws SQLException {
 		//     戻り値の型         メソッド名     引数
 
 		log.info(new Object() {

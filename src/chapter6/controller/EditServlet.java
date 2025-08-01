@@ -59,13 +59,28 @@ public class EditServlet extends HttpServlet {
 		}
 
 		String id = request.getParameter("id");
+		List<String> errorMessages = new ArrayList<String>();
+		HttpSession session = request.getSession();
 
-		//          下へf     				MessageServiceにuserIdを渡す　及びかえって来る
+		if (StringUtils.isBlank(id) || !id.matches("^[0-9]+$")) {
+			errorMessages.add("不正なパラメータが入力されました");
+			session.setAttribute("errorMessages", errorMessages);
+			response.sendRedirect("./");
+			//("./");top.servletに飛ぶ
+			return;
+		}
+		//    下へf        MessageServiceにuserIdを渡す　及びかえって来る
 		Message message = new MessageService().selectEdit(id);
+		if (message == null) {
+			errorMessages.add("不正なパラメータが入力されました");
+			session.setAttribute("errorMessages", errorMessages);
+			response.sendRedirect("./");
+			return;
+		}
 
 		//top.jspに渡す${messages} リクエストから値を取り出す際の基本構文  <%= request.getAttribute("messages") %>
 		request.setAttribute("message", message);
-
+		//idがどうすんねん
 		//第一引数に格納する名前(key)[テーブル]、第二引数に格納する値(value)「60行」を渡す
 		request.setAttribute("isShowMessageForm", isShowMessageForm);
 
@@ -83,15 +98,14 @@ public class EditServlet extends HttpServlet {
 				" : " + new Object() {
 				}.getClass().getEnclosingMethod().getName());
 
-		HttpSession session = request.getSession();
+		//HttpSession session = request.getSession();
 		List<String> errorMessages = new ArrayList<String>();
 
-/*		Message message = getMessage(request);*/
+		/*		Message message = getMessage(request);*/
 		Message message = new Message();
 		//edit.jspからメッセージIDを受けている（(request.getParameter("id"）を受けてる
 		message.setId(Integer.parseInt(request.getParameter("id")));
 		message.setText(request.getParameter("description"));
-
 
 		String messageCheck = message.getText();
 		if (!Valid(messageCheck, errorMessages)) {
@@ -105,20 +119,6 @@ public class EditServlet extends HttpServlet {
 		new MessageService().update(message);
 		response.sendRedirect("./");
 	}
-
-/*	private Message getMessage(HttpServletRequest request) throws IOException, ServletException {
-
-		log.info(new Object() {
-		}.getClass().getEnclosingClass().getName() +
-				" : " + new Object() {
-				}.getClass().getEnclosingMethod().getName());
-
-
-
-
-		return message;
-	}*/
-
 
 	private boolean Valid(String messageCheck, List<String> wrongMessages) {
 		log.info(new Object() {
