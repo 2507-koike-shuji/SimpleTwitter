@@ -79,7 +79,7 @@
 				</div>
 					<!--削除表示-->
 				<c:if test="${message.userId == loginUser.id}">
-					<form action="deletemessage" method="post">
+					<form action="deleteMessage" method="post">
 						<input type="submit" value="削除">
 						 <input name="id" value="${message.id}" id="id" type="hidden" />
 						<!-- input　いろいろな機能をすでに持つ　form内で同時に遅れる-->
@@ -89,7 +89,7 @@
 					<!--更新表示-->
 					<form action="edit" method="get">
 						<input type="submit" value="編集">
-						 <input name="id" value="${message.id}" id="id" type="hidden" />
+						<input name="id" value="${message.id}" id="id" type="hidden" />
 					</form>
 				</c:if>
 			</div>

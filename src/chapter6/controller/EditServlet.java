@@ -70,7 +70,7 @@ public class EditServlet extends HttpServlet {
 			return;
 		}
 		//    下へf        MessageServiceにuserIdを渡す　及びかえって来る
-		Message message = new MessageService().selectEdit(id);
+		Message message = new MessageService().selection(id);
 		if (message == null) {
 			errorMessages.add("不正なパラメータが入力されました");
 			session.setAttribute("errorMessages", errorMessages);
@@ -80,7 +80,7 @@ public class EditServlet extends HttpServlet {
 
 		//top.jspに渡す${messages} リクエストから値を取り出す際の基本構文  <%= request.getAttribute("messages") %>
 		request.setAttribute("message", message);
-		//idがどうすんねん
+
 		//第一引数に格納する名前(key)[テーブル]、第二引数に格納する値(value)「60行」を渡す
 		request.setAttribute("isShowMessageForm", isShowMessageForm);
 
@@ -98,10 +98,8 @@ public class EditServlet extends HttpServlet {
 				" : " + new Object() {
 				}.getClass().getEnclosingMethod().getName());
 
-		//HttpSession session = request.getSession();
 		List<String> errorMessages = new ArrayList<String>();
 
-		/*		Message message = getMessage(request);*/
 		Message message = new Message();
 		//edit.jspからメッセージIDを受けている（(request.getParameter("id"）を受けてる
 		message.setId(Integer.parseInt(request.getParameter("id")));
@@ -110,7 +108,7 @@ public class EditServlet extends HttpServlet {
 		String messageCheck = message.getText();
 		if (!Valid(messageCheck, errorMessages)) {
 			request.setAttribute("errorMessages", errorMessages);
-			//
+
 			request.setAttribute("message", message);
 			//画面表示　＝　リソースをもう一度forward
 			request.getRequestDispatcher("/edit.jsp").forward(request, response);
