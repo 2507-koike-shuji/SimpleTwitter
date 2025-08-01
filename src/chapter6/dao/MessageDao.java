@@ -195,12 +195,8 @@ public class MessageDao {
 			StringBuilder sql = new StringBuilder();
 			sql.append("UPDATE messages SET ");
 			sql.append("text = ?, ");
-			sql.append("created_date = CURRENT_TIMESTAMP, ");
 			sql.append("updated_date = CURRENT_TIMESTAMP ");
 			sql.append("WHERE id = ?");
-
-		//	sql.append("created_date = CURRENT_TIMESTAMP, ");
-			//sql.append("updated_date = CURRENT_TIMESTAMP ");
 
 			ps = connection.prepareStatement(sql.toString());
 
