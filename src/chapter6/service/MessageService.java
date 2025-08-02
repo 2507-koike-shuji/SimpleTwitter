@@ -139,7 +139,7 @@ public class MessageService {
 	}
 
 	//つぶやきの編集画面の表示
-	public Message selection(String messageId) {
+	public Message selection(int id) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -154,10 +154,7 @@ public class MessageService {
 			* ServletからuserIdの値が渡ってきていたら
 			* 整数型に型変換し、idに代入
 			*/
-			Integer id = null;
-			if (!StringUtils.isEmpty(messageId)) {
-				id = Integer.parseInt(messageId);
-			}
+
 			/*
 			* messageDao.selectに引数としてInteger型のidを追加
 			* idがnullだったら全件取得する
