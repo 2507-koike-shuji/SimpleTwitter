@@ -131,7 +131,7 @@ public class MessageDao {
 			//結果を詰め替える
 			List<Message> message = toUserMessages(rs);
 			//メソッドを呼び出している「private List<UserMessage> toUserMessages(ResultSet rs) throws SQLException」
-			//求めていたモノをすべて表示するため　lsit
+			//求めていたモノをすべて表示するため lsit
 			if (message.isEmpty()) {
 				return null;
 			} else {

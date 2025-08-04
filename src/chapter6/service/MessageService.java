@@ -150,12 +150,6 @@ public class MessageService {
 		try {
 			connection = getConnection(); //Connectionを有効化
 			/*
-			* idをnullで初期化
-			* ServletからuserIdの値が渡ってきていたら
-			* 整数型に型変換し、idに代入
-			*/
-
-			/*
 			* messageDao.selectに引数としてInteger型のidを追加
 			* idがnullだったら全件取得する
 			* idがnull以外だったら、その値に対応するユーザーIDの投稿を取得する
