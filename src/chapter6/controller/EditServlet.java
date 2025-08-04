@@ -72,7 +72,7 @@ public class EditServlet extends HttpServlet {
 
 
 		//    下へf        MessageServiceにuserIdを渡す　及びかえって来る
-		Message message = new MessageService().selection(Integer.parseInt(id));
+		Message message = new MessageService().select(Integer.parseInt(id));
 		if (message == null) {
 			errorMessages.add("不正なパラメータが入力されました");
 			session.setAttribute("errorMessages", errorMessages);

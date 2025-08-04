@@ -139,7 +139,7 @@ public class MessageService {
 	}
 
 	//つぶやきの編集画面の表示
-	public Message selection(int id) {
+	public Message select(int id) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -160,7 +160,7 @@ public class MessageService {
 			* idがnullだったら全件取得する
 			* idがnull以外だったら、その値に対応するユーザーIDの投稿を取得する
 			*/
-			Message message = new MessageDao().selection(connection, id);
+			Message message = new MessageDao().select(connection, id);
 			commit(connection);
 
 			return message;

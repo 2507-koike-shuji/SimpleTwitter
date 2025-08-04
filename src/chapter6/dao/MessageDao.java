@@ -101,7 +101,7 @@ public class MessageDao {
 	}
 
 	//つぶやきの更新画面の表示
-	public Message selection(Connection connection, Integer id) {
+	public Message select(Connection connection, Integer id) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
