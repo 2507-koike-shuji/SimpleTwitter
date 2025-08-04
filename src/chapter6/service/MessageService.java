@@ -139,8 +139,7 @@ public class MessageService {
 	}
 
 	//つぶやきの編集画面の表示
-	public Message select(int id) {  //[この行を変更いたしました（selection　→select）※コードレビュー後にこのコメントは削除」の形で表記しています。
-
+	public Message select(int id) {
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
 				" : " + new Object() {

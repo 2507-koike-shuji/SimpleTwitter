@@ -1,4 +1,4 @@
-//DBに登録された情報をinsertする
+//DBに登録された情報をinsertする　登録系
 package chapter6.dao;
 
 import static chapter6.utils.CloseableUtil.*;

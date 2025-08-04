@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import chapter6.beans.User;
 import chapter6.beans.UserMessage;
 import chapter6.logging.InitApplication;
+import chapter6.service.CommentService;
 import chapter6.service.MessageService;
 
 @WebServlet(urlPatterns = { "/index.jsp" })
@@ -61,13 +62,16 @@ public class TopServlet extends HttpServlet {
 		}
 
 		String userId = request.getParameter("user_id");
-
-		//          下へf     				MessageServiceにuserIdを渡す　及びかえって来る
+		//          下へ 				MessageServiceにuserIdを渡す　及びかえって来る
 		List<UserMessage> messages = new MessageService().select(userId);
+
+		List<UserMessage> comments = new CommentService().select();
+		//全てを持ってくるから条件はなく、空でよい
+
 
 		//top.jspに渡す${messages} リクエストから値を取り出す際の基本構文  <%= request.getAttribute("messages") %>
 		request.setAttribute("messages", messages);
-
+		request.setAttribute("comments", comments);
 		//第一引数に格納する名前(key)[テーブル]、第二引数に格納する値(value)「60行」を渡す
 		request.setAttribute("isShowMessageForm", isShowMessageForm);
 		//getRequestDispatcherメソッドの引数に呼び出したいJSP名指定してRequestDispatcherオブジェクトに渡すことで、画面の指定

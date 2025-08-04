@@ -10,6 +10,7 @@ public class Message implements Serializable {
 
 	private int id;
 	private int userId;
+	private int messageId;
 	private String text;
 	private Date createdDate;
 	private Date updatedDate;
@@ -31,6 +32,14 @@ public class Message implements Serializable {
 
 	public void setUserId(int useId) {
 		this.userId = useId;
+	}
+	//messageId
+	public int getMessageId() {
+		return messageId;
+	}
+
+	public void setMessageId(int messageId) {
+		this.messageId = messageId;
 	}
 
 	//text

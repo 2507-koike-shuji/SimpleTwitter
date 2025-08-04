@@ -67,6 +67,9 @@
 				<div class="account-name">
 					<span class="account"> <a
 						href="./?user_id=<c:out value="${message.userId}"/> "> <c:out value="${message.account}" /></a>
+						<!--href="./?user_id=<c:out value="${message.userId}"/> "> <c:out value="${message.account}" /></a>-->
+						<!--href="./　　＝指定してほしいリンク先-->
+						<!--user_id=　　パラメータ「これがあると、URLに表記される　→postにあらず→　get」-->
 					</span> <span class="name"> <c:out value="${message.name}" />
 					</span>
 				</div>
@@ -77,7 +80,10 @@
 					<fmt:formatDate value="${message.createdDate}"
 						pattern="yyyy/MM/dd HH:mm:ss" />
 				</div>
-					<!--削除表示-->
+
+
+
+				<!--削除表示-->
 				<c:if test="${message.userId == loginUser.id}">
 					<form action="deleteMessage" method="post">
 						<input type="submit" value="削除">
@@ -92,11 +98,36 @@
 						<input name="id" value="${message.id}" id="id" type="hidden" />
 					</form>
 				</c:if>
+
+
+				<!--返信の表示用-->
+					<c:forEach items="${comments}" var="comment">
+						<c:if test="${message.id == comment.messageId}">
+							<div class="text">
+			 					<pre><c:out value="${comment.text}" /></pre>
+							</div>
+							<div class="date">
+								<fmt:formatDate value="${comment.createdDate}"
+							pattern="yyyy/MM/dd HH:mm:ss" />
+							</div>
+
+						</c:if>
+					</c:forEach>
+				<!--返信用-->
+				<div class="replaydisplay">
+					<c:if test="${ isShowMessageForm }">
+						<form action="comment" method="post">
+							返信する？<br /><textarea name="text" cols="100" rows="5" class="tweet-box"></textarea>
+							<br /> <input type="submit" value="返信">（140文字まで）
+								<input name="id" value="${message.id}" id="id" type="hidden" />
+						</form>
+					</c:if>
+				</div>
+
+
 			</div>
 		</c:forEach>
 	</div>
-
-
 
 </body>
 </html>
