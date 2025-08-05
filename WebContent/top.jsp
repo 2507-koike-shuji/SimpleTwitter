@@ -38,8 +38,12 @@
 			</div>
 		</c:if>
 		<div class = "confine">
-		<input type="date" name = "fromTime">～<input type="date" name = "byTime">
-		<input type="submit" value="絞り込み">
+			<form action="./" method="get">
+				<input type="date" name="fromTime">
+				～
+				<input type="date" name="byTime">
+				<input type="submit" value="絞り込み">
+			</form>
 		</div>
 	</div>
 	<c:if test="${ not empty errorMessages }">

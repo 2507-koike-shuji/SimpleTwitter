@@ -97,7 +97,7 @@ public class MessageService {
 				StartTime = fromTime + " 00:00:00";
 			}
 			if (!StringUtils.isEmpty(byTime)) {
-				EndTime = fromTime + " 00:00:00";
+				EndTime = byTime + " 00:00:00";
 			}
 
 			List<UserMessage> messages = new UserMessageDao().select(connection, StartTime, EndTime, id, LIMIT_NUM);
