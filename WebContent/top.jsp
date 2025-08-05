@@ -37,6 +37,10 @@
 				</div>
 			</div>
 		</c:if>
+		<div class = "confine">
+		<input type="date" name = "fromTime">～<input type="date" name = "byTime">
+		<input type="submit" value="絞り込み">
+		</div>
 	</div>
 	<c:if test="${ not empty errorMessages }">
 		<div class="errorMessages">
@@ -101,25 +105,33 @@
 
 
 				<!--返信の表示用-->
-					<c:forEach items="${comments}" var="comment">
+				<c:forEach items="${comments}" var="comment">
 						<c:if test="${message.id == comment.messageId}">
+						<!--message.id「editでも使っている」comment.messageId「同じクラスの中の同じメッセージ」-->
+							<div class="name">
+			 					<pre><c:out value="${comment.name}" /></pre>
+							</div>
+								<div class="account">
+			 					<pre><c:out value="${comment.account}" /></pre>
+							</div>
 							<div class="text">
 			 					<pre><c:out value="${comment.text}" /></pre>
 							</div>
 							<div class="date">
-								<fmt:formatDate value="${comment.createdDate}"
-							pattern="yyyy/MM/dd HH:mm:ss" />
+								<fmt:formatDate value="${comment.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" />
 							</div>
 
 						</c:if>
-					</c:forEach>
+				</c:forEach>
+
 				<!--返信用-->
 				<div class="replaydisplay">
 					<c:if test="${ isShowMessageForm }">
 						<form action="comment" method="post">
 							返信する？<br /><textarea name="text" cols="100" rows="5" class="tweet-box"></textarea>
 							<br /> <input type="submit" value="返信">（140文字まで）
-								<input name="id" value="${message.id}" id="id" type="hidden" />
+							<input name="id" value="${message.id}" id="id" type="hidden" />
+
 						</form>
 					</c:if>
 				</div>

@@ -15,6 +15,7 @@ import chapter6.beans.UserMessage;
 import chapter6.exception.SQLRuntimeException;
 import chapter6.logging.InitApplication;
 
+
 public class UserMessageDao {
 
 	/**
@@ -33,7 +34,7 @@ public class UserMessageDao {
 	}
 
 	//DBからデータを引っ張ってくる
-	public List<UserMessage> select(Connection connection, Integer id, int num) {
+	public List<UserMessage> select(Connection connection, String StartTime, String EndTime, Integer id, int num) {
 		//DBUtilsでconnectionsのメソッドを作っている
 
 		log.info(new Object() {
@@ -60,17 +61,24 @@ public class UserMessageDao {
 			sql.append("FROM messages ");
 			sql.append("INNER JOIN users ");
 			sql.append("ON messages.user_id = users.id ");
+			sql.append("WHERE messages.created_date BETWEEN ? AND ?");
 			if (id != null) {
 				sql.append("WHERE messages.user_id = ? ");
 			}
 			sql.append("ORDER BY created_date DESC limit " + num);
 
-			//3：SQLを実行できるようにする
-			ps = connection.prepareStatement(sql.toString());
-			if (id != null) {
 
-				//４:SQLの動的部分に値をセットする
-				ps.setInt(1, id);
+			 //Date date = new Date();
+			 //SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/E/k/mm/ss");
+		    // String time = new SimpleDateFormat("yyyy/MM/dd/E/k/mm/ss").format(date);
+
+
+			ps = connection.prepareStatement(sql.toString());
+
+			ps.setString(1,StartTime);
+			ps.setString(2, EndTime);
+			if (id != null) {
+				ps.setInt(3, id);
 			}
 			//topから持ってきたリンクの人のidを?に入れる
 

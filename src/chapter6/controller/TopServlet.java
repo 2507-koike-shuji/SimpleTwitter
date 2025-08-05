@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import chapter6.beans.User;
+import chapter6.beans.UserComment;
 import chapter6.beans.UserMessage;
 import chapter6.logging.InitApplication;
 import chapter6.service.CommentService;
@@ -60,17 +61,19 @@ public class TopServlet extends HttpServlet {
 		if (user != null) {
 			isShowMessageForm = true;
 		}
-
+		String fromTime = request.getParameter("fromTime");
+		String byTime = request.getParameter("byTime");
 		String userId = request.getParameter("user_id");
 		//          下へ 				MessageServiceにuserIdを渡す　及びかえって来る
-		List<UserMessage> messages = new MessageService().select(userId);
+		List<UserMessage> messages = new MessageService().select(fromTime, byTime, userId);
 
-		List<UserMessage> comments = new CommentService().select();
+		List<UserComment> comments = new CommentService().select();
 		//全てを持ってくるから条件はなく、空でよい
 
 
 		//top.jspに渡す${messages} リクエストから値を取り出す際の基本構文  <%= request.getAttribute("messages") %>
 		request.setAttribute("messages", messages);
+
 		request.setAttribute("comments", comments);
 		//第一引数に格納する名前(key)[テーブル]、第二引数に格納する値(value)「60行」を渡す
 		request.setAttribute("isShowMessageForm", isShowMessageForm);
