@@ -33,7 +33,7 @@ public class UserMessageDao {
 	}
 
 	//DBからデータを引っ張ってくる
-	public List<UserMessage> select(Connection connection, String StartTime, String EndTime, Integer id, int num) {
+	public List<UserMessage> select(Connection connection, String startTime, String endTime, Integer id, int num) {
 		//DBUtilsでconnectionsのメソッドを作っている
 
 		log.info(new Object() {
@@ -61,14 +61,14 @@ public class UserMessageDao {
 			sql.append("ON messages.user_id = users.id ");
 			sql.append("WHERE messages.created_date BETWEEN ? AND ?");
 			if (id != null) {
-				sql.append("WHERE messages.user_id = ? ");
+				sql.append("AND messages.user_id = ? ");
 			}
 			sql.append("ORDER BY created_date DESC limit " + num);
 
 			ps = connection.prepareStatement(sql.toString());
 
-			ps.setString(1, StartTime);
-			ps.setString(2, EndTime);
+			ps.setString(1, startTime);
+			ps.setString(2, endTime);
 			if (id != null) {
 				ps.setInt(3, id);
 			}

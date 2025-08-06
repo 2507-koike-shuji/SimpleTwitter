@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-//import chapter6.beans.Message;
 import chapter6.beans.Comment;
 import chapter6.exception.SQLRuntimeException;
 import chapter6.logging.InitApplication;

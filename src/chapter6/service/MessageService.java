@@ -66,7 +66,7 @@ public class MessageService {
 	}
 
 	//つぶやきの表示
-	public List<UserMessage> select(String fromTime, String byTime, String userId) {
+	public List<UserMessage> select(String start, String end, String userId) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -90,17 +90,17 @@ public class MessageService {
 
 			Date date = new Date();
 
-			String StartTime = "2020-01-01 00:00:00";
-			String EndTime = new SimpleDateFormat("yyyy/MM/dd/E/k/mm/ss").format(date);
+			String startTime = "2020-01-01 00:00:00";
+			String endTime = new SimpleDateFormat("yyyy/MM/dd/E/k/mm/ss").format(date);
 
-			if (!StringUtils.isEmpty(fromTime)) {
-				StartTime = fromTime + " 00:00:00";
+			if (!StringUtils.isEmpty(start)) {
+				startTime = start + " 00:00:00";
 			}
-			if (!StringUtils.isEmpty(byTime)) {
-				EndTime = byTime + " 00:00:00";
+			if (!StringUtils.isEmpty(end)) {
+				endTime =end + " 00:00:00";
 			}
 
-			List<UserMessage> messages = new UserMessageDao().select(connection, StartTime, EndTime, id, LIMIT_NUM);
+			List<UserMessage> messages = new UserMessageDao().select(connection, startTime, endTime, id, LIMIT_NUM);
 			commit(connection);
 
 			return messages;
@@ -119,7 +119,7 @@ public class MessageService {
 		}
 	}
 
-	// つぶやきの削除
+	// つぶやきの削除s
 	public void delete(String id) {
 
 		log.info(new Object() {

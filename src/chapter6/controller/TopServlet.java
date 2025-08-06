@@ -61,13 +61,13 @@ public class TopServlet extends HttpServlet {
 		if (user != null) {
 			isShowMessageForm = true;
 		}
-		String fromTime = request.getParameter("fromTime");
-		String byTime = request.getParameter("byTime");
+		String start = request.getParameter("start");
+		String end = request.getParameter("end");
 		//リンクを押されて該当のユーザーのみを示すときに使う　
 		String userId = request.getParameter("user_id");
 
 		//          下へ 				MessageServiceにuserIdを渡す　及びかえって来る
-		List<UserMessage> messages = new MessageService().select(fromTime, byTime, userId);
+		List<UserMessage> messages = new MessageService().select(start, end, userId);
 
 		List<UserComment> comments = new CommentService().select();
 		//全てを持ってくるから条件はなく、空でよい

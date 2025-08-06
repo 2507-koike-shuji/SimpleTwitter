@@ -39,9 +39,9 @@
 		</c:if>
 		<div class = "confine">
 			<form action="./" method="get">
-				<input type="date" name="fromTime">
+				<input type="date" name="start">
 				～
-				<input type="date" name="byTime">
+				<input type="date" name="end">
 				<input type="submit" value="絞り込み">
 			</form>
 		</div>
@@ -103,25 +103,25 @@
 					</form>
 				</c:if>
 
-
 				<!--返信の表示用-->
 				<c:forEach items="${comments}" var="comment">
-						<c:if test="${message.id == comment.messageId}">
-						<!--message.id「editでも使っている」comment.messageId「同じクラスの中の同じメッセージ」-->
-							<div class="name">
-			 					<pre><c:out value="${comment.name}" /></pre>
-							</div>
-								<div class="account">
-			 					<pre><c:out value="${comment.account}" /></pre>
-							</div>
-							<div class="text">
-			 					<pre><c:out value="${comment.text}" /></pre>
-							</div>
-							<div class="date">
-								<fmt:formatDate value="${comment.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" />
-							</div>
-
-						</c:if>
+					<c:if test="${message.id == comment.messageId}">
+					<!--message.id「editでも使っている」comment.messageId「同じクラスの中の同じメッセージ」-->
+						<div class="name">
+			 				<c:out value="${comment.name}" />
+						</div>
+						<div class="account">
+			 				<c:out value="${comment.account}" />
+						</div>
+						<div class="text">
+		 					<c:out value="${comment.account}" />
+						</div>							<div class="text">
+			 				<pre><c:out value="${comment.text}" /></pre>
+						</div>
+						<div class="date">
+							<fmt:formatDate value="${comment.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" />
+						</div>
+					</c:if>
 				</c:forEach>
 
 				<!--返信用-->
@@ -135,11 +135,8 @@
 						</form>
 					</c:if>
 				</div>
-
-
 			</div>
 		</c:forEach>
 	</div>
-
 </body>
 </html>
