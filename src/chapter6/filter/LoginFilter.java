@@ -35,7 +35,6 @@ public class LoginFilter implements Filter {
 		User loginUser = (User) session.getAttribute("loginUser");
 
 		if (loginUser != null) {
-
 			//chain.doFilter でリクエストのあった画面に遷移
 			chain.doFilter(request, response);
 		} else {

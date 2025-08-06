@@ -42,7 +42,7 @@
 			<form action="./" method="get">
 				<input type="date" name="start" value="${start}">
 				～
-				<input type="date" name="end"  value="${end}">
+				<input type="date" name="end" value="${end}">
 				<input type="submit" value="絞り込み">
 				<!--valeuはnameに紐づくもの-->
 			</form>
