@@ -75,9 +75,8 @@
 				<div class="account-name">
 					<span class="account"> <a
 						href="./?user_id=<c:out value="${message.userId}"/> "> <c:out value="${message.account}" /></a>
-						<!--href="./?user_id=<c:out value="${message.userId}"/> "> <c:out value="${message.account}" /></a>-->
-						<!--href="./　　＝指定してほしいリンク先-->
 						<!--user_id=　　パラメータ「これがあると、URLに表記される　→postにあらず→　get」-->
+						<!--リンクが押されて、ユーザーIDを渡して、その人のモノを下記で示す　（リンクを触らなければ全部）-->
 					</span> <span class="name"> <c:out value="${message.name}" />
 					</span>
 				</div>
@@ -88,9 +87,6 @@
 					<fmt:formatDate value="${message.createdDate}"
 						pattern="yyyy/MM/dd HH:mm:ss" />
 				</div>
-
-
-
 				<!--削除表示-->
 				<c:if test="${message.userId == loginUser.id}">
 					<form action="deleteMessage" method="post">

@@ -15,7 +15,7 @@ public class User implements Serializable {
 	private Date createdDate;
 	private Date updatedDate;
 
-	// getter/setterは省略されているので、自分で記述しましょう。
+	//id
 	public int getId() {
 		return id;
 	}

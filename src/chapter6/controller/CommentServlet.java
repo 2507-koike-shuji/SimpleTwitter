@@ -1,4 +1,3 @@
-//「つぶやき機能｣のロジック
 package chapter6.controller;
 
 import java.io.IOException;
@@ -15,13 +14,13 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 
-import chapter6.beans.Message;
+import chapter6.beans.Comment;
 import chapter6.beans.User;
 import chapter6.logging.InitApplication;
-import chapter6.service.MessageService;
+import chapter6.service.CommentService;
 
-@WebServlet(urlPatterns = { "/message" })
-public class MessageServlet extends HttpServlet {
+@WebServlet(urlPatterns = { "/comment" })
+public class CommentServlet extends HttpServlet {
 
 	/**
 	* ロガーインスタンスの生成
@@ -32,7 +31,7 @@ public class MessageServlet extends HttpServlet {
 	* デフォルトコンストラクタ
 	* アプリケーションの初期化を実施する。
 	*/
-	public MessageServlet() {
+	public CommentServlet() {
 		InitApplication application = InitApplication.getInstance();
 		application.init();
 
@@ -41,18 +40,16 @@ public class MessageServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
+		//dopostには<form action="comment" method="post">～＜/formの中の情報しか送られない＞
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
 				" : " + new Object() {
 				}.getClass().getEnclosingMethod().getName());
-		//セッションを利用するには必要
+
 		HttpSession session = request.getSession();
-		//空の配列をつくる
-		List<String> errorMessages = new ArrayList<String>();
-		//リクエストから値を取り出す際の基本構文
 		String text = request.getParameter("text");
-		//呼び出している（）は呼び出し先に渡している
+		List<String> errorMessages = new ArrayList<String>();
 		if (!isValid(text, errorMessages)) {
 
 			session.setAttribute("errorMessages", errorMessages);
@@ -60,18 +57,19 @@ public class MessageServlet extends HttpServlet {
 			response.sendRedirect("./");
 			return;
 		}
-
-		Message message = new Message();
-		message.setText(text);
+		Comment comment = new Comment();
+		comment.setText(text);
 
 		User user = (User) session.getAttribute("loginUser");
-		message.setUserId(user.getId());
+		comment.setUserId(user.getId());
 
-		new MessageService().insert(message);
+		//<div class="messages">でひとつのかたまり　それらがたくさんある　→messageid→その中
+		comment.setMessageId(Integer.parseInt(request.getParameter("id")));
+
+		new CommentService().insert(comment);
 		response.sendRedirect("./");
 	}
 
-	//呼び出された（つぶやきで送られてきた内容の審査）
 	private boolean isValid(String text, List<String> errorMessages) {
 
 		log.info(new Object() {

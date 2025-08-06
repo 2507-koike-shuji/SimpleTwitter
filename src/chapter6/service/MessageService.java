@@ -89,7 +89,7 @@ public class MessageService {
 			}
 
 			Date date = new Date();
-			//SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/E/k/mm/ss");
+
 			String StartTime = "2020-01-01 00:00:00";
 			String EndTime = new SimpleDateFormat("yyyy/MM/dd/E/k/mm/ss").format(date);
 

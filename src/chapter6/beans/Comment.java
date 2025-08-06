@@ -1,17 +1,14 @@
-//Beans：データをまとめる入れもの
-//つぶやき情報をひとまとめに扱う
-
 package chapter6.beans;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class Message implements Serializable {
+public class Comment implements Serializable {
 
 	private int id;
+	private String text;
 	private int userId;
 	private int messageId;
-	private String text;
 	private Date createdDate;
 	private Date updatedDate;
 
@@ -24,13 +21,22 @@ public class Message implements Serializable {
 		this.id = id;
 	}
 
+	//text
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
 	//useId
 	public int getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int useId) {
-		this.userId = useId;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	//messageId
@@ -40,15 +46,6 @@ public class Message implements Serializable {
 
 	public void setMessageId(int messageId) {
 		this.messageId = messageId;
-	}
-
-	//text
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
 	}
 
 	//createdDate
@@ -68,5 +65,4 @@ public class Message implements Serializable {
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
 	}
-
 }

@@ -63,13 +63,14 @@ public class TopServlet extends HttpServlet {
 		}
 		String fromTime = request.getParameter("fromTime");
 		String byTime = request.getParameter("byTime");
+		//リンクを押されて該当のユーザーのみを示すときに使う　
 		String userId = request.getParameter("user_id");
+
 		//          下へ 				MessageServiceにuserIdを渡す　及びかえって来る
 		List<UserMessage> messages = new MessageService().select(fromTime, byTime, userId);
 
 		List<UserComment> comments = new CommentService().select();
 		//全てを持ってくるから条件はなく、空でよい
-
 
 		//top.jspに渡す${messages} リクエストから値を取り出す際の基本構文  <%= request.getAttribute("messages") %>
 		request.setAttribute("messages", messages);

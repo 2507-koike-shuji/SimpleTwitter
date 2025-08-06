@@ -1,17 +1,18 @@
-//つぶやきに関する表示するメッセージ(ビュー)に対応するBean
 package chapter6.beans;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserMessage implements Serializable {
+public class UserComment implements Serializable {
 
 	private int id;
 	private String account;
 	private String name;
 	private int userId;
+	private int messageId;
 	private String text;
 	private Date createdDate;
+	private Date updatedDate;
 
 	//id
 	public int getId() {
@@ -49,6 +50,15 @@ public class UserMessage implements Serializable {
 		this.userId = userId;
 	}
 
+	//messageId
+	public int getMessageId() {
+		return messageId;
+	}
+
+	public void setMessageId(int messageId) {
+		this.messageId = messageId;
+	}
+
 	//text
 	public String getText() {
 		return text;
@@ -67,4 +77,12 @@ public class UserMessage implements Serializable {
 		this.createdDate = createdDate;
 	}
 
+	//updatedDate
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
+	}
 }

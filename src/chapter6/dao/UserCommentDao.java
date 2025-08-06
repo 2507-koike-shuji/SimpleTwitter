@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import chapter6.beans.UserMessage;
+import chapter6.beans.UserComment;
 import chapter6.exception.SQLRuntimeException;
 import chapter6.logging.InitApplication;
 
-public class UserMessageDao {
+public class UserCommentDao {
 
 	/**
 	* ロガーインスタンスの生成
@@ -26,15 +26,12 @@ public class UserMessageDao {
 	* デフォルトコンストラクタ
 	* アプリケーションの初期化を実施する。
 	*/
-	public UserMessageDao() {
+	public UserCommentDao() {
 		InitApplication application = InitApplication.getInstance();
 		application.init();
-
 	}
 
-	//DBからデータを引っ張ってくる
-	public List<UserMessage> select(Connection connection, String StartTime, String EndTime, Integer id, int num) {
-		//DBUtilsでconnectionsのメソッドを作っている
+	public List<UserComment> select(Connection connection, int num) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -44,44 +41,31 @@ public class UserMessageDao {
 		//	1：SQLの下地を作る
 		PreparedStatement ps = null;
 
-		//2:SQL文の作成
 		try {
-			//もし、ユーザーIDが押下されたら、ユーザーのものだけを示す
+
 			StringBuilder sql = new StringBuilder();
 
 			sql.append("SELECT ");
-			sql.append("    messages.id as id, ");
-			sql.append("    messages.text as text, ");
-			sql.append("    messages.user_id as user_id, ");
+			sql.append("    comments.id as id, ");
+			sql.append("    comments.text as text, ");
+			sql.append("    comments.user_id as user_id, ");
+			sql.append("    comments.message_id as message_id, ");
 			sql.append("    users.account as account, ");
 			sql.append("    users.name as name, ");
-			sql.append("    messages.created_date as created_date ");
-			sql.append("FROM messages ");
+			sql.append("    comments.created_date as created_date, ");
+			sql.append("    comments.updated_date as updated_date ");
+			sql.append("FROM comments ");
 			sql.append("INNER JOIN users ");
-			sql.append("ON messages.user_id = users.id ");
-			sql.append("WHERE messages.created_date BETWEEN ? AND ?");
-			if (id != null) {
-				sql.append("WHERE messages.user_id = ? ");
-			}
-			sql.append("ORDER BY created_date DESC limit " + num);
+			sql.append("ON comments.user_id = users.id ");
+			sql.append("ORDER BY created_date ASC limit " + num);
 
 			ps = connection.prepareStatement(sql.toString());
 
-			ps.setString(1, StartTime);
-			ps.setString(2, EndTime);
-			if (id != null) {
-				ps.setInt(3, id);
-			}
-			//topから持ってきたリンクの人のidを?に入れる
-
-			//5:SQｌを実行、結果はrsに入る
 			ResultSet rs = ps.executeQuery();
-
-			//結果を詰め替える
-			List<UserMessage> messages = toUserMessages(rs);
+			List<UserComment> comments = toUerComment(rs);
 			//メソッドを呼び出している「private List<UserMessage> toUserMessages(ResultSet rs) throws SQLException」
 			//求めていたモノをすべて表示するため　lsit
-			return messages;
+			return comments;
 			//rerturnで35行目の戻り値　	public List<UserMessage> select(Connection connection, Integer id, int num) {に渡す
 
 		} catch (SQLException e) {
@@ -93,7 +77,9 @@ public class UserMessageDao {
 		}
 	}
 
-	private List<UserMessage> toUserMessages(ResultSet rs) throws SQLException {
+	//resultset型[データを扱えない]からList<UserMessage>につめ変える
+
+	private List<UserComment> toUerComment(ResultSet rs) throws SQLException {
 		//     戻り値の型         メソッド名     引数
 
 		log.info(new Object() {
@@ -101,23 +87,24 @@ public class UserMessageDao {
 				" : " + new Object() {
 				}.getClass().getEnclosingMethod().getName());
 
-		List<UserMessage> messages = new ArrayList<UserMessage>();
+		List<UserComment> comments = new ArrayList<UserComment>();
 		try {
 			while (rs.next()) {
 				//オブジェクトのデータがなくなるまで処理を繰り返すためのループ構文
 
 				//カラムごとに詰め替える
-				UserMessage message = new UserMessage();
-				message.setId(rs.getInt("id"));
-				message.setText(rs.getString("text"));
-				message.setUserId(rs.getInt("user_id"));
-				message.setAccount(rs.getString("account"));
-				message.setName(rs.getString("name"));
-				message.setCreatedDate(rs.getTimestamp("created_date"));
-
-				messages.add(message);
+				UserComment comment = new UserComment();
+				comment.setId(rs.getInt("id"));
+				comment.setText(rs.getString("text"));
+				comment.setUserId(rs.getInt("user_id"));
+				comment.setMessageId(rs.getInt("message_id"));
+				comment.setAccount(rs.getString("account"));
+				comment.setName(rs.getString("name"));
+				comment.setCreatedDate(rs.getTimestamp("created_date"));
+				comment.setUpdatedDate(rs.getTimestamp("updated_date"));
+				comments.add(comment);
 			}
-			return messages;// List<UserMessage> の戻り値の型と一致 messagesは呼び出し元のist<UserMessage> messages = toUserMessages(rs);「」の「 toUserMessages(rs)」へ飛ぶ
+			return comments;// List<UserMessage> の戻り値の型と一致 messagesは呼び出し元のist<UserMessage> messages = toUserMessages(rs);「」の「 toUserMessages(rs)」へ飛ぶ
 		} finally {
 			close(rs);
 		}
