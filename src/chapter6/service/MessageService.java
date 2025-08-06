@@ -91,7 +91,7 @@ public class MessageService {
 			Date date = new Date();
 
 			String startTime = "2020-01-01 00:00:00";
-			String endTime = new SimpleDateFormat("yyyy/MM/dd/E/k/mm/ss").format(date);
+			String endTime = new SimpleDateFormat("yyyy/MM/dd/hh/mm/ss").format(date);
 
 			if (!StringUtils.isEmpty(start)) {
 				startTime = start + " 00:00:00";
@@ -99,6 +99,7 @@ public class MessageService {
 			if (!StringUtils.isEmpty(end)) {
 				endTime =end + " 00:00:00";
 			}
+
 
 			List<UserMessage> messages = new UserMessageDao().select(connection, startTime, endTime, id, LIMIT_NUM);
 			commit(connection);

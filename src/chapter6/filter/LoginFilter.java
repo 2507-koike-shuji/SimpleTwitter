@@ -42,7 +42,7 @@ public class LoginFilter implements Filter {
 			List<String> errorMessages = new ArrayList<String>();
 			errorMessages.add("ログインをしてください");
 			session.setAttribute("errorMessages", errorMessages);
-			httpResponse.sendRedirect("login.jsp");
+			httpResponse.sendRedirect("./login");
 		}
 	}
 

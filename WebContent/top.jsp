@@ -37,12 +37,14 @@
 				</div>
 			</div>
 		</c:if>
+		<!--絞り込み-->
 		<div class = "confine">
 			<form action="./" method="get">
-				<input type="date" name="start">
+				<input type="date" name="start" value="${start}">
 				～
-				<input type="date" name="end">
+				<input type="date" name="end"  value="${end}">
 				<input type="submit" value="絞り込み">
+				<!--valeuはnameに紐づくもの-->
 			</form>
 		</div>
 	</div>
@@ -114,8 +116,6 @@
 			 				<c:out value="${comment.account}" />
 						</div>
 						<div class="text">
-		 					<c:out value="${comment.account}" />
-						</div>							<div class="text">
 			 				<pre><c:out value="${comment.text}" /></pre>
 						</div>
 						<div class="date">

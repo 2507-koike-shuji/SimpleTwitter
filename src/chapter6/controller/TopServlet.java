@@ -74,7 +74,8 @@ public class TopServlet extends HttpServlet {
 
 		//top.jspに渡す${messages} リクエストから値を取り出す際の基本構文  <%= request.getAttribute("messages") %>
 		request.setAttribute("messages", messages);
-
+		request.setAttribute("start", start);
+		request.setAttribute("end", end);
 		request.setAttribute("comments", comments);
 		//第一引数に格納する名前(key)[テーブル]、第二引数に格納する値(value)「60行」を渡す
 		request.setAttribute("isShowMessageForm", isShowMessageForm);
